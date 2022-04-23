@@ -1,28 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const dogForm = document.getElementById("dog-form");
-        const tbody = document.getElementById("table-body");
-        
+  const dogForm = document.getElementById("dog-form");
+  const tbody = document.getElementById("table-body");
+
   dogForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      console.log(e.target.children.name.id)
+    e.preventDefault();
     const id = parseInt(e.target.children.name.id);
-    const name = e.target.children.name.value;
-    const sex = e.target.children.sex.value;
-    const breed = e.target.children.breed.value;
-    const dogObject = {
-      name,
-      sex,
-      breed,
-    };
-      editDog(id, dogObject).then(dogData => {
-          fetchDogs.then(dogsData => {
-              const newDogsData = [...dogsData, dogData]
-              tbody.textContent = "";
-              for (dog of newDogsData) {
-                createDogData(dog);
-              }
-          })
-      })
+    if (id) {
+      const name = e.target.children.name.value;
+      const sex = e.target.children.sex.value;
+      const breed = e.target.children.breed.value;
+      const dogObject = {
+        name,
+        sex,
+        breed,
+      };
+      editDog(id, dogObject).then((dogData) => {
+        fetchDogs().then((dogsData) => {
+          const newDogsData = [...dogsData, dogData];
+          tbody.textContent = "";
+          for (dog of newDogsData) {
+            createDogData(dog);
+          }
+        });
+      });
+        return
+    }
+      return
   });
 
   function fetchDogs() {
@@ -34,8 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        },
-      body:JSON.stringify(dogObject)
+      },
+      body: JSON.stringify(dogObject),
     }).then((res) => res.json());
   }
 
@@ -48,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
   function createDogData(data) {
-  
     const row = document.createElement("tr");
     const dogName = document.createElement("td");
     const dogBreed = document.createElement("td");

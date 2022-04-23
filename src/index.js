@@ -23,9 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
       });
-        return
+        e.target.reset()
     }
-      return
   });
 
   function fetchDogs() {
